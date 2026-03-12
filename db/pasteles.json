@@ -1,0 +1,48 @@
+{
+  "pasteles":[
+    {
+      "nombre":"Pastel Chocolate Infantil",
+      "imagenes":[
+        "img/pedido02.png",
+        "img/pastel1_2.jpg",
+        "img/pastel1_3.jpg"
+      ],
+      "etiquetas":["chocolate","infantil","10 personas"],
+      "descripcion":"Pastel de chocolate con decoración infantil."
+    },
+    {
+      "nombre":"Pastel Elegante de Boda",
+      "imagenes":[
+        "img/pedido01.png"
+      ],
+      "etiquetas":["vainilla","boda","20 personas"],
+      "descripcion":"Pastel elegante para bodas."
+    },
+    {
+      "nombre":"Pastel Elegante de Boda",
+      "imagenes":[
+        "img/pedido03.png"
+      ],
+      "etiquetas":["vainilla","boda","20 personas"],
+      "descripcion":"Pastel elegante para bodas."
+    },
+    {
+      "nombre":"Pastel Elegante de Boda",
+      "imagenes":[
+        "img/pedido04.png"
+      ],
+      "etiquetas":["vainilla","boda","20 personas"],
+      "descripcion":"Pastel elegante para bodas."
+    },
+    {
+      "nombre":"Pastel Elegante de Boda",
+      "imagenes":[
+        "img/pedido05.png"
+      ],
+      "etiquetas":["vainilla","boda","20 personas"],
+      "descripcion":"Pastel elegante para bodas."
+    }
+
+
+  ]
+}
