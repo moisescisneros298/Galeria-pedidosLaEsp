@@ -1,13 +1,13 @@
 {
   "pasteles":[
     {
-      "nombre":"Pastel Chocolate Infantil",
+      "nombre":"Pastel",
       "imagenes":[
         "img/pedido02.png",
         "img/pastel1_2.jpg",
         "img/pastel1_3.jpg"
       ],
-      "etiquetas":["chocolate","infantil","10 personas"],
+      "etiquetas":["25","gerrerasKpop", "cumpleanios"],
       "descripcion":"Pastel de chocolate con decoración infantil."
     },
     {
@@ -15,7 +15,7 @@
       "imagenes":[
         "img/pedido01.png"
       ],
-      "etiquetas":["vainilla","boda","20 personas"],
+      "etiquetas":["25","boda","20 personas"],
       "descripcion":"Pastel elegante para bodas."
     },
     {
@@ -23,7 +23,7 @@
       "imagenes":[
         "img/pedido03.png"
       ],
-      "etiquetas":["vainilla","boda","20 personas"],
+      "etiquetas":["tres pisos","100 personas","dinosaurios"],
       "descripcion":"Pastel elegante para bodas."
     },
     {
@@ -31,7 +31,7 @@
       "imagenes":[
         "img/pedido04.png"
       ],
-      "etiquetas":["vainilla","boda","20 personas"],
+      "etiquetas":["25","cenicienta"],
       "descripcion":"Pastel elegante para bodas."
     },
     {
@@ -39,7 +39,7 @@
       "imagenes":[
         "img/pedido05.png"
       ],
-      "etiquetas":["vainilla","boda","20 personas"],
+      "etiquetas":["25","minecraft",""],
       "descripcion":"Pastel elegante para bodas."
     },
     {
@@ -49,23 +49,11 @@
         "img/pedido03.jpg"
       ],
       "etiquetas": [
-        "repostería",
-        "nuevo"
+        "30",
+        "lara campos"
       ],
       "descripcion": "Descripción pendiente de editar."
     },
-  {
-    "id": 7,
-    "nombre": "Producto pedido03",
-    "imagenes": [
-      "img/pedido03.png"
-    ],
-    "etiquetas": [
-      "repostería",
-      "nuevo"
-    ],
-    "descripcion": "Descripción pendiente de editar."
-  },
   {
     "id": 8,
     "nombre": "Producto pedido04",
@@ -73,44 +61,8 @@
       "img/pedido04.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
-    ],
-    "descripcion": "Descripción pendiente de editar."
-  },
-  {
-    "id": 9,
-    "nombre": "Producto pedido04",
-    "imagenes": [
-      "img/pedido04.png"
-    ],
-    "etiquetas": [
-      "repostería",
-      "nuevo"
-    ],
-    "descripcion": "Descripción pendiente de editar."
-  },
-  {
-    "id": 10,
-    "nombre": "Producto pedido05",
-    "imagenes": [
-      "img/pedido05.jpg"
-    ],
-    "etiquetas": [
-      "repostería",
-      "nuevo"
-    ],
-    "descripcion": "Descripción pendiente de editar."
-  },
-  {
-    "id": 11,
-    "nombre": "Producto pedido05",
-    "imagenes": [
-      "img/pedido05.png"
-    ],
-    "etiquetas": [
-      "repostería",
-      "nuevo"
+      "30",
+      "cumpleanios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -121,20 +73,8 @@
       "img/pedido06.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
-    ],
-    "descripcion": "Descripción pendiente de editar."
-  },
-  {
-    "id": 13,
-    "nombre": "Producto pedido07",
-    "imagenes": [
-      "img/pedido07.jpg"
-    ],
-    "etiquetas": [
-      "repostería",
-      "nuevo"
+      "3 pisos chico",
+      "60"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -145,32 +85,9 @@
       "img/pedido08.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
-    ],
-    "descripcion": "Descripción pendiente de editar."
-  },
-  {
-    "id": 15,
-    "nombre": "Producto pedido09",
-    "imagenes": [
-      "img/pedido09.jpg"
-    ],
-    "etiquetas": [
-      "repostería",
-      "nuevo"
-    ],
-    "descripcion": "Descripción pendiente de editar."
-  },
-  {
-    "id": 16,
-    "nombre": "Producto pedido10",
-    "imagenes": [
-      "img/pedido10.jpg"
-    ],
-    "etiquetas": [
-      "repostería",
-      "nuevo"
+      "media",
+      "50 personas",
+      "comunios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -181,8 +98,9 @@
       "img/pedido100.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "4 psisos",
+      "150 personas",
+      "15 anios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -193,8 +111,9 @@
       "img/pedido101.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "30",
+      "picaPiedras",
+      "cumpleanios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -205,8 +124,9 @@
       "img/pedido102.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "cumpleanios",
+      "25",
+      "princesa"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -217,8 +137,9 @@
       "img/pedido103.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "2 pisos",
+      "40 pesonas",
+      "15 anios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -229,8 +150,9 @@
       "img/pedido104.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "4 psisos",
+      "110 personas",
+      "bautizo"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -241,20 +163,9 @@
       "img/pedido105.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
-    ],
-    "descripcion": "Descripción pendiente de editar."
-  },
-  {
-    "id": 23,
-    "nombre": "Producto pedido106",
-    "imagenes": [
-      "img/pedido106.jpg"
-    ],
-    "etiquetas": [
-      "repostería",
-      "nuevo"
+      "30",
+      "cumpleanios",
+      "dinosaurios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -265,9 +176,9 @@
       "img/pedido107.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
-    ],
+      "25",
+      "cumpleanios",
+      "casa de muniecas"    ],
     "descripcion": "Descripción pendiente de editar."
   },
   {
@@ -277,8 +188,8 @@
       "img/pedido108.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "15",
+      "cumpleanios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -289,8 +200,9 @@
       "img/pedido109.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "25",
+      "cumpleanios",
+      "micky"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -301,8 +213,9 @@
       "img/pedido11.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "30",
+      "cumpleanios",
+      "dinosaurios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -313,8 +226,10 @@
       "img/pedido110.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "mediaPancha",
+      "15 anios",
+      "boda",
+      "50 personas"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -325,8 +240,10 @@
       "img/pedido111.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "40 personas",
+      "50 personas",
+      "cumpleanios",
+      "casa de muniecas"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -337,8 +254,9 @@
       "img/pedido112.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "15",
+      "20",
+      "cumpleanios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -409,8 +327,10 @@
       "img/pedido118.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "3 pisos",
+      "100 personas",
+      "boda",
+      "15 anios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -421,8 +341,8 @@
       "img/pedido119.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "25",
+      "cumpleanios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -457,8 +377,8 @@
       "img/pedido121.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "150",
+      "bautizo"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -553,8 +473,10 @@
       "img/pedido129.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "25",
+      "cumpleanios",
+      "nina",
+      "pepa pig"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -577,8 +499,8 @@
       "img/pedido130.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "80 personas",
+      "babyshower"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -589,8 +511,9 @@
       "img/pedido131.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "100 personas",
+      "3 pisos",
+      "boda"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -601,8 +524,9 @@
       "img/pedido132.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "30",
+      "cumpleanios",
+      "mario"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -613,8 +537,9 @@
       "img/pedido133.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "25",
+      "cumpleanios",
+      "acuaman"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -697,8 +622,9 @@
       "img/pedido14.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "25",
+      "cumpleanios",
+      "gerrerasKpop"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -817,8 +743,9 @@
       "img/pedido24.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "400 personas",
+      "boda",
+      "15 anios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -913,8 +840,9 @@
       "img/pedido32.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "80 personas",
+      "cumpleanios",
+      "seniores"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -937,8 +865,11 @@
       "img/pedido34.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "30",
+      "cumpleanios",
+      "seniores",
+      "toluca",
+      "futboll"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -949,8 +880,9 @@
       "img/pedido35.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "40 personas",
+      "2 pisos",
+      "cumpleanios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -1609,8 +1541,9 @@
       "img/pedido90.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "500 personas",
+      "boda",
+      "plancha con pisos"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -1693,8 +1626,9 @@
       "img/pedido97.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "400 personas",
+      "boda",
+      "15 anios"
     ],
     "descripcion": "Descripción pendiente de editar."
   },
@@ -1717,8 +1651,8 @@
       "img/pedido99.jpg"
     ],
     "etiquetas": [
-      "repostería",
-      "nuevo"
+      "cumpleanios",
+      "50"
     ],
     "descripcion": "Descripción pendiente de editar."
   }
