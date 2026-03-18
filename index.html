@@ -1,55 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Galería de Pedi2</title>
-<link rel="stylesheet" href="styles.css">
-</head> 
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galería de Pedi2</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
 <body>
+  <header class="topbar-shell">
+    <nav class="topbar" aria-label="Navegación principal">
+      <a class="brand" href="#catalogo">PPedi2 🍰</a>
+      <div class="topbar-summary">
+        <strong id="heroTotal">0</strong>
+        <span>diseños</span>
+      </div>
+    </nav>
+  </header>
 
-<h1>Galería de PPedi2 🍰</h1>
+  <main class="page-shell">
+    <section class="toolbar" id="filtros-section">
+      <div class="toolbar-heading">
+        <div>
+          <h1>Catálogo de pedidos</h1>
+          <p id="resultsSummary">Cargando catálogo...</p>
+        </div>
+        <button id="clearFilters" class="btn btn-tertiary" type="button">Limpiar</button>
+      </div>
 
-<div id="filters" class="filters"></div>
+      <div class="toolbar-controls">
+        <div class="search-input-wrap compact">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="Buscar pastel o temática..." autocomplete="off" aria-label="Buscar por nombre, descripción o etiqueta">
+        </div>
+      </div>
 
-<div id="gallery" class="gallery"></div>
+      <div class="filters-panel">
+        <div id="filters" class="filters" aria-label="Filtros por etiquetas"></div>
+        <button id="toggleFiltersBtn" class="btn btn-secondary filters-toggle" type="button" hidden>Ver más filtros</button>
+      </div>
+    </section>
 
-<!-- ventana -->
+    <section id="catalogo" class="catalog-section">
+      <div id="gallery" class="gallery" aria-live="polite"></div>
+      <div id="emptyState" class="empty-state" hidden>
+        <h3>No encontramos resultados</h3>
+        <p>Prueba quitando algunos filtros o usando una búsqueda más general.</p>
+      </div>
+    </section>
+  </main>
 
-<div id="modal" class="modal">
+  <footer class="site-footer">
+    <p>Hecho por moises</p>
+  </footer>
 
-<div class="modal-content">
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="cakeTitle">
+      <button class="close" type="button" onclick="closeModal()" aria-label="Cerrar ventana">×</button>
 
-<div class="close" onclick="closeModal()">×</div>
+      <div class="modal-layout">
+        <div class="modal-images">
+          <div class="modal-main-image-wrap">
+            <button id="prevImgBtn" class="modal-nav" type="button" aria-label="Imagen anterior">‹</button>
+            <img id="modalImg" alt="Vista previa del pastel">
+            <button id="nextImgBtn" class="modal-nav" type="button" aria-label="Siguiente imagen">›</button>
+          </div>
+          <div id="thumbs" class="thumbs" aria-label="Miniaturas de imágenes"></div>
+        </div>
 
-<div class="modal-layout">
+        <div class="modal-info" id="modalInfo">
+          <h2 id="cakeTitle"></h2>
+          <div id="modalTags" class="modal-tags"></div>
+          <p id="cakeDesc"></p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="modal-images">
-
-<img id="modalImg">
-
-<div id="thumbs" class="thumbs"></div>
-
-</div>
-
-<div class="modal-info">
-
-<h2 id="cakeTitle"></h2>
-
-<div id="modalTags" class="modal-tags"></div>
-
-<p id="cakeDesc"></p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<script src="script.js"></script>
-<script defer src="/_vercel/insights/script.js"></script>
-
+  <script src="script.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
