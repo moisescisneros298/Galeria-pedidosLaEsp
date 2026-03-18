@@ -1,9 +1,12 @@
+const FILTERS_COLLAPSED_COUNT = 10;
+
 let cakesData = [];
 let filteredCakes = [];
 let activeFilters = new Set();
 let searchTerm = "";
 let currentModalCake = null;
 let currentImageIndex = 0;
+let filtersExpanded = false;
 
 const gallery = document.getElementById("gallery");
 const filtersContainer = document.getElementById("filters");
@@ -11,14 +14,14 @@ const searchInput = document.getElementById("searchInput");
 const clearFiltersBtn = document.getElementById("clearFilters");
 const resultsSummary = document.getElementById("resultsSummary");
 const emptyState = document.getElementById("emptyState");
-const scrollTopBtn = document.getElementById("scrollTopBtn");
 const heroTotal = document.getElementById("heroTotal");
-const heroTags = document.getElementById("heroTags");
+const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
 const modal = document.getElementById("modal");
 const modalTitle = document.getElementById("cakeTitle");
 const modalDesc = document.getElementById("cakeDesc");
 const modalImg = document.getElementById("modalImg");
 const modalTags = document.getElementById("modalTags");
+const modalInfo = document.getElementById("modalInfo");
 const thumbs = document.getElementById("thumbs");
 const prevImgBtn = document.getElementById("prevImgBtn");
 const nextImgBtn = document.getElementById("nextImgBtn");
@@ -29,7 +32,7 @@ fetch("/db/pasteles.json")
     cakesData = data.pasteles || [];
     filteredCakes = [...cakesData];
     createFilters();
-    updateHeroStats();
+    updateHeaderStats();
     applyFilters();
   })
   .catch(() => {
@@ -54,14 +57,18 @@ function getSearchableText(cake) {
   ].join(" "));
 }
 
-function updateHeroStats() {
+function getUniqueTags() {
   const tags = new Set();
+
   cakesData.forEach((cake) => {
     (cake.etiquetas || []).filter(Boolean).forEach((tag) => tags.add(tag));
   });
 
+  return [...tags].sort((a, b) => a.localeCompare(b, "es"));
+}
+
+function updateHeaderStats() {
   heroTotal.textContent = cakesData.length;
-  heroTags.textContent = tags.size;
 }
 
 function printCakes(cakes) {
@@ -69,49 +76,44 @@ function printCakes(cakes) {
   emptyState.hidden = cakes.length > 0;
 
   cakes.forEach((cake, index) => {
-    const div = document.createElement("article");
-    div.className = "cake";
-    div.tabIndex = 0;
+    const card = document.createElement("article");
+    card.className = "cake";
+    card.tabIndex = 0;
 
     const tagsHTML = (cake.etiquetas || [])
       .filter(Boolean)
+      .slice(0, 3)
       .map((tag) => `<span class="tag">${tag}</span>`)
       .join("");
 
-    div.innerHTML = `
+    card.innerHTML = `
       <img loading="lazy" src="${cake.imagenes?.[0] || ""}" alt="${cake.nombre}">
       <div class="cake-overlay">
         <div class="cake-copy">
           <h3>${cake.nombre}</h3>
-          <p>${cake.descripcion || "Diseño personalizado disponible."}</p>
+          <div class="tags">${tagsHTML}</div>
         </div>
-        <div class="tags">${tagsHTML}</div>
       </div>
     `;
 
-    div.onclick = () => openModal(cake);
-    div.onkeydown = (event) => {
+    card.onclick = () => openModal(cake);
+    card.onkeydown = (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
         openModal(cake);
       }
     };
 
-    gallery.appendChild(div);
+    gallery.appendChild(card);
 
     requestAnimationFrame(() => {
-      setTimeout(() => div.classList.add("show"), index * 45);
+      setTimeout(() => card.classList.add("show"), index * 30);
     });
   });
 }
 
 function createFilters() {
   filtersContainer.innerHTML = "";
-
-  const tags = new Set();
-  cakesData.forEach((cake) => {
-    (cake.etiquetas || []).filter(Boolean).forEach((tag) => tags.add(tag));
-  });
 
   const allBtn = document.createElement("button");
   allBtn.textContent = "Todos";
@@ -120,16 +122,34 @@ function createFilters() {
   allBtn.onclick = clearAllFilters;
   filtersContainer.appendChild(allBtn);
 
-  [...tags]
-    .sort((a, b) => a.localeCompare(b, "es"))
-    .forEach((tag) => {
-      const btn = document.createElement("button");
-      btn.textContent = tag;
-      btn.className = "filter-btn";
-      btn.dataset.filter = tag;
-      btn.onclick = () => toggleFilter(tag);
-      filtersContainer.appendChild(btn);
-    });
+  getUniqueTags().forEach((tag, index) => {
+    const btn = document.createElement("button");
+    btn.textContent = tag;
+    btn.className = "filter-btn";
+    btn.dataset.filter = tag;
+    btn.onclick = () => toggleFilter(tag);
+
+    if (index >= FILTERS_COLLAPSED_COUNT) {
+      btn.classList.add("is-extra");
+      btn.hidden = !filtersExpanded;
+    }
+
+    filtersContainer.appendChild(btn);
+  });
+
+  updateFiltersToggle();
+}
+
+function updateFiltersToggle() {
+  const extraFilters = filtersContainer.querySelectorAll(".is-extra");
+  const shouldShowToggle = extraFilters.length > 0;
+
+  toggleFiltersBtn.hidden = !shouldShowToggle;
+  toggleFiltersBtn.textContent = filtersExpanded ? "Ver menos filtros" : "Ver más filtros";
+
+  extraFilters.forEach((btn) => {
+    btn.hidden = !filtersExpanded;
+  });
 }
 
 function clearAllFilters() {
@@ -152,7 +172,7 @@ function toggleFilter(tag) {
 function applyFilters() {
   filteredCakes = cakesData.filter((cake) => {
     const matchesSearch = !searchTerm || getSearchableText(cake).includes(searchTerm);
-    const matchesTags = [...activeFilters].every((tag) => (cake.etiquetas || []).includes(tag));
+    const matchesTags = activeFilters.size === 0 || [...activeFilters].some((tag) => (cake.etiquetas || []).includes(tag));
     return matchesSearch && matchesTags;
   });
 
@@ -172,10 +192,10 @@ function updateFiltersUI() {
 function updateResultsSummary() {
   const total = cakesData.length;
   const visible = filteredCakes.length;
-  const filtersText = activeFilters.size > 0 ? ` · ${activeFilters.size} filtro(s) activo(s)` : "";
-  const searchText = searchTerm ? ` · búsqueda: “${searchInput.value.trim()}”` : "";
+  const filtersText = activeFilters.size > 0 ? ` · ${activeFilters.size} filtro(s)` : "";
+  const searchText = searchTerm ? ` · “${searchInput.value.trim()}”` : "";
 
-  resultsSummary.textContent = `${visible} de ${total} diseños visibles${filtersText}${searchText}`;
+  resultsSummary.textContent = `${visible} de ${total} resultados${filtersText}${searchText}`;
 }
 
 function openModal(cake) {
@@ -258,9 +278,12 @@ searchInput.addEventListener("input", (event) => {
 });
 
 clearFiltersBtn.addEventListener("click", clearAllFilters);
-scrollTopBtn.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+
+toggleFiltersBtn.addEventListener("click", () => {
+  filtersExpanded = !filtersExpanded;
+  updateFiltersToggle();
 });
+
 prevImgBtn.addEventListener("click", () => changeModalImage(-1));
 nextImgBtn.addEventListener("click", () => changeModalImage(1));
 
