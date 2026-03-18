@@ -172,7 +172,7 @@ function toggleFilter(tag) {
 function applyFilters() {
   filteredCakes = cakesData.filter((cake) => {
     const matchesSearch = !searchTerm || getSearchableText(cake).includes(searchTerm);
-    const matchesTags = [...activeFilters].every((tag) => (cake.etiquetas || []).includes(tag));
+    const matchesTags = activeFilters.size === 0 || [...activeFilters].some((tag) => (cake.etiquetas || []).includes(tag));
     return matchesSearch && matchesTags;
   });
 
