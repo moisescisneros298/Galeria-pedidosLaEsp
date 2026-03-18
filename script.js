@@ -1,4 +1,3 @@
-const INITIAL_VISIBLE_CAKES = 12;
 const FILTERS_COLLAPSED_COUNT = 10;
 
 let cakesData = [];
@@ -7,7 +6,6 @@ let activeFilters = new Set();
 let searchTerm = "";
 let currentModalCake = null;
 let currentImageIndex = 0;
-let visibleCakesCount = INITIAL_VISIBLE_CAKES;
 let filtersExpanded = false;
 
 const gallery = document.getElementById("gallery");
@@ -17,7 +15,6 @@ const clearFiltersBtn = document.getElementById("clearFilters");
 const resultsSummary = document.getElementById("resultsSummary");
 const emptyState = document.getElementById("emptyState");
 const heroTotal = document.getElementById("heroTotal");
-const loadMoreBtn = document.getElementById("loadMoreBtn");
 const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
 const modal = document.getElementById("modal");
 const modalTitle = document.getElementById("cakeTitle");
@@ -116,12 +113,6 @@ function printCakes(cakes) {
   });
 }
 
-function renderVisibleCakes() {
-  const visibleCakes = filteredCakes.slice(0, visibleCakesCount);
-  printCakes(visibleCakes);
-  loadMoreBtn.hidden = filteredCakes.length <= visibleCakesCount;
-}
-
 function createFilters() {
   filtersContainer.innerHTML = "";
 
@@ -165,7 +156,6 @@ function updateFiltersToggle() {
 function clearAllFilters() {
   activeFilters.clear();
   searchTerm = "";
-  visibleCakesCount = INITIAL_VISIBLE_CAKES;
   searchInput.value = "";
   applyFilters();
 }
@@ -177,7 +167,6 @@ function toggleFilter(tag) {
     activeFilters.add(tag);
   }
 
-  visibleCakesCount = INITIAL_VISIBLE_CAKES;
   applyFilters();
 }
 
@@ -190,7 +179,7 @@ function applyFilters() {
 
   updateFiltersUI();
   updateResultsSummary();
-  renderVisibleCakes();
+  printCakes(filteredCakes);
 }
 
 function updateFiltersUI() {
@@ -300,15 +289,10 @@ function closeModal() {
 
 searchInput.addEventListener("input", (event) => {
   searchTerm = normalizeText(event.target.value);
-  visibleCakesCount = INITIAL_VISIBLE_CAKES;
   applyFilters();
 });
 
 clearFiltersBtn.addEventListener("click", clearAllFilters);
-loadMoreBtn.addEventListener("click", () => {
-  visibleCakesCount += INITIAL_VISIBLE_CAKES;
-  renderVisibleCakes();
-});
 
 toggleFiltersBtn.addEventListener("click", () => {
   filtersExpanded = !filtersExpanded;
