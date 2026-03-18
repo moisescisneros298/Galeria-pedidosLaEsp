@@ -340,10 +340,6 @@ input {
   transition: opacity 0.2s ease;
 }
 
-.modal-mobile-actions {
-  display: none;
-}
-
 .modal-info {
   text-align: left;
   padding-top: 10px;
@@ -496,22 +492,9 @@ input {
     border-radius: 14px;
   }
 
-  .modal-mobile-actions {
-    display: flex;
-    margin-top: 10px;
-  }
-
-  .modal-details-btn {
-    width: 100%;
-  }
-
   .modal-info {
-    display: none;
-    padding: 4px 0 0;
-  }
-
-  .modal-info.show-details {
     display: block;
+    padding: 4px 0 0;
   }
 
   .thumbs {

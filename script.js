@@ -25,7 +25,6 @@ const modalInfo = document.getElementById("modalInfo");
 const thumbs = document.getElementById("thumbs");
 const prevImgBtn = document.getElementById("prevImgBtn");
 const nextImgBtn = document.getElementById("nextImgBtn");
-const toggleDetailsBtn = document.getElementById("toggleDetailsBtn");
 
 fetch("/db/pasteles.json")
   .then((res) => res.json())
@@ -205,9 +204,7 @@ function openModal(cake) {
 
   modal.classList.add("active");
   modal.setAttribute("aria-hidden", "false");
-  modalInfo.classList.remove("show-details");
   document.body.classList.add("modal-open");
-  updateDetailsButton();
 
   modalTitle.innerText = cake.nombre;
   modalDesc.innerText = cake.descripcion || "Diseño personalizado disponible.";
@@ -268,21 +265,9 @@ function changeModalImage(direction) {
   renderModalImage();
 }
 
-function updateDetailsButton() {
-  toggleDetailsBtn.textContent = modalInfo.classList.contains("show-details")
-    ? "Ocultar detalles"
-    : "Ver detalles";
-}
-
-function toggleModalDetails() {
-  modalInfo.classList.toggle("show-details");
-  updateDetailsButton();
-}
-
 function closeModal() {
   modal.classList.remove("active");
   modal.setAttribute("aria-hidden", "true");
-  modalInfo.classList.remove("show-details");
   document.body.classList.remove("modal-open");
   currentModalCake = null;
 }
@@ -301,7 +286,6 @@ toggleFiltersBtn.addEventListener("click", () => {
 
 prevImgBtn.addEventListener("click", () => changeModalImage(-1));
 nextImgBtn.addEventListener("click", () => changeModalImage(1));
-toggleDetailsBtn.addEventListener("click", toggleModalDetails);
 
 /* ESC y navegación */
 document.addEventListener("keydown", (e) => {
