@@ -1,221 +1,278 @@
-let cakesData=[];
+let cakesData = [];
+let filteredCakes = [];
 let activeFilters = new Set();
+let searchTerm = "";
+let currentModalCake = null;
+let currentImageIndex = 0;
 
-fetch("/db/pasteles.json")
-.then(res=>res.json())
-.then(data=>{
-cakesData=data.pasteles;
-printCakes(cakesData);
-});
-
-fetch("/db/pasteles.json")
-.then(res=>res.json())
-.then(data=>{
-
-cakesData=data.pasteles;
-
-createFilters();
-
-printCakes(cakesData);
-
-}); 
-
-function printCakes(cakes){
-
-const gallery=document.getElementById("gallery");
-gallery.innerHTML="";
-
-cakes.forEach((cake,index)=>{
-
-const div=document.createElement("div");
-div.className="cake";
-
-let tagsHTML="";
-
-cake.etiquetas.forEach(tag=>{
-tagsHTML+=`<span class="tag">${tag}</span>`;
-});
-
-div.innerHTML=`
-<img loading="lazy" src="${cake.imagenes[0]}">
-<div class="tags">${tagsHTML}</div>
-`;
-
-div.onclick=()=>openModal(cake);
-
-gallery.appendChild(div);
-
-/* animacion */
-
-setTimeout(()=>{
-div.classList.add("show");
-},index*80);
-
-});
-
-}
-
-function filterCakes(filter){
-
-if(filter === "all"){
-printCakes(cakesData);
-return;
-}
-
-const filtered = cakesData.filter(cake => 
-cake.etiquetas.includes(filter)
-);
-
-printCakes(filtered);
-
-}
-
-function openModal(cake){
-
-const modal=document.getElementById("modal");
-
-modal.classList.add("active");
-
-document.getElementById("cakeTitle").innerText=cake.nombre;
-
-document.getElementById("cakeDesc").innerText=cake.descripcion;
-
-const mainImg=document.getElementById("modalImg");
-mainImg.src=cake.imagenes[0];
-
-const modalTags=document.getElementById("modalTags");
-modalTags.innerHTML="";
-
-cake.etiquetas.forEach(tag=>{
-modalTags.innerHTML+=`<span class="tag">${tag}</span>`;
-});
-
-/* miniaturas */
-
-const thumbs=document.getElementById("thumbs");
-thumbs.innerHTML="";
-
-cake.imagenes.forEach(img=>{
-
-const t=document.createElement("img");
-
-t.loading="lazy";
-t.src=img;
-
-t.onclick=()=>mainImg.src=img;
-
-t.onclick=()=>{
-mainImg.style.opacity=0;
-
-setTimeout(()=>{
-mainImg.src=img;
-mainImg.style.opacity=1;
-},150);
-};
-
-thumbs.appendChild(t);
-
-});
-
-}
-
-function closeModal(){
-document.getElementById("modal").classList.remove("active");
-}
-
-function createFilters(){
-
+const gallery = document.getElementById("gallery");
 const filtersContainer = document.getElementById("filters");
+const searchInput = document.getElementById("searchInput");
+const clearFiltersBtn = document.getElementById("clearFilters");
+const resultsSummary = document.getElementById("resultsSummary");
+const emptyState = document.getElementById("emptyState");
+const scrollTopBtn = document.getElementById("scrollTopBtn");
+const heroTotal = document.getElementById("heroTotal");
+const heroTags = document.getElementById("heroTags");
+const modal = document.getElementById("modal");
+const modalTitle = document.getElementById("cakeTitle");
+const modalDesc = document.getElementById("cakeDesc");
+const modalImg = document.getElementById("modalImg");
+const modalTags = document.getElementById("modalTags");
+const thumbs = document.getElementById("thumbs");
+const prevImgBtn = document.getElementById("prevImgBtn");
+const nextImgBtn = document.getElementById("nextImgBtn");
 
-/* obtener todas las etiquetas */
+fetch("/db/pasteles.json")
+  .then((res) => res.json())
+  .then((data) => {
+    cakesData = data.pasteles || [];
+    filteredCakes = [...cakesData];
+    createFilters();
+    updateHeroStats();
+    applyFilters();
+  })
+  .catch(() => {
+    resultsSummary.textContent = "No se pudo cargar el catálogo en este momento.";
+    emptyState.hidden = false;
+  });
 
-const tags = new Set();
+function normalizeText(text) {
+  return (text || "")
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
 
-cakesData.forEach(cake=>{
-cake.etiquetas.forEach(tag=>{
-tags.add(tag);
+function getSearchableText(cake) {
+  return normalizeText([
+    cake.nombre,
+    cake.descripcion,
+    ...(cake.etiquetas || []),
+  ].join(" "));
+}
+
+function updateHeroStats() {
+  const tags = new Set();
+  cakesData.forEach((cake) => {
+    (cake.etiquetas || []).filter(Boolean).forEach((tag) => tags.add(tag));
+  });
+
+  heroTotal.textContent = cakesData.length;
+  heroTags.textContent = tags.size;
+}
+
+function printCakes(cakes) {
+  gallery.innerHTML = "";
+  emptyState.hidden = cakes.length > 0;
+
+  cakes.forEach((cake, index) => {
+    const div = document.createElement("article");
+    div.className = "cake";
+    div.tabIndex = 0;
+
+    const tagsHTML = (cake.etiquetas || [])
+      .filter(Boolean)
+      .map((tag) => `<span class="tag">${tag}</span>`)
+      .join("");
+
+    div.innerHTML = `
+      <img loading="lazy" src="${cake.imagenes?.[0] || ""}" alt="${cake.nombre}">
+      <div class="cake-overlay">
+        <div class="cake-copy">
+          <h3>${cake.nombre}</h3>
+          <p>${cake.descripcion || "Diseño personalizado disponible."}</p>
+        </div>
+        <div class="tags">${tagsHTML}</div>
+      </div>
+    `;
+
+    div.onclick = () => openModal(cake);
+    div.onkeydown = (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openModal(cake);
+      }
+    };
+
+    gallery.appendChild(div);
+
+    requestAnimationFrame(() => {
+      setTimeout(() => div.classList.add("show"), index * 45);
+    });
+  });
+}
+
+function createFilters() {
+  filtersContainer.innerHTML = "";
+
+  const tags = new Set();
+  cakesData.forEach((cake) => {
+    (cake.etiquetas || []).filter(Boolean).forEach((tag) => tags.add(tag));
+  });
+
+  const allBtn = document.createElement("button");
+  allBtn.textContent = "Todos";
+  allBtn.className = "filter-btn active";
+  allBtn.dataset.filter = "all";
+  allBtn.onclick = clearAllFilters;
+  filtersContainer.appendChild(allBtn);
+
+  [...tags]
+    .sort((a, b) => a.localeCompare(b, "es"))
+    .forEach((tag) => {
+      const btn = document.createElement("button");
+      btn.textContent = tag;
+      btn.className = "filter-btn";
+      btn.dataset.filter = tag;
+      btn.onclick = () => toggleFilter(tag);
+      filtersContainer.appendChild(btn);
+    });
+}
+
+function clearAllFilters() {
+  activeFilters.clear();
+  searchTerm = "";
+  searchInput.value = "";
+  applyFilters();
+}
+
+function toggleFilter(tag) {
+  if (activeFilters.has(tag)) {
+    activeFilters.delete(tag);
+  } else {
+    activeFilters.add(tag);
+  }
+
+  applyFilters();
+}
+
+function applyFilters() {
+  filteredCakes = cakesData.filter((cake) => {
+    const matchesSearch = !searchTerm || getSearchableText(cake).includes(searchTerm);
+    const matchesTags = [...activeFilters].every((tag) => (cake.etiquetas || []).includes(tag));
+    return matchesSearch && matchesTags;
+  });
+
+  updateFiltersUI();
+  updateResultsSummary();
+  printCakes(filteredCakes);
+}
+
+function updateFiltersUI() {
+  document.querySelectorAll(".filter-btn").forEach((btn) => {
+    const value = btn.dataset.filter;
+    const isAll = value === "all";
+    btn.classList.toggle("active", isAll ? activeFilters.size === 0 : activeFilters.has(value));
+  });
+}
+
+function updateResultsSummary() {
+  const total = cakesData.length;
+  const visible = filteredCakes.length;
+  const filtersText = activeFilters.size > 0 ? ` · ${activeFilters.size} filtro(s) activo(s)` : "";
+  const searchText = searchTerm ? ` · búsqueda: “${searchInput.value.trim()}”` : "";
+
+  resultsSummary.textContent = `${visible} de ${total} diseños visibles${filtersText}${searchText}`;
+}
+
+function openModal(cake) {
+  currentModalCake = cake;
+  currentImageIndex = 0;
+
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+
+  modalTitle.innerText = cake.nombre;
+  modalDesc.innerText = cake.descripcion || "Diseño personalizado disponible.";
+
+  modalTags.innerHTML = (cake.etiquetas || [])
+    .filter(Boolean)
+    .map((tag) => `<span class="tag">${tag}</span>`)
+    .join("");
+
+  renderModalImage();
+  renderThumbnails();
+}
+
+function renderModalImage() {
+  if (!currentModalCake) return;
+
+  const images = currentModalCake.imagenes || [];
+  const safeIndex = Math.max(0, Math.min(currentImageIndex, images.length - 1));
+  currentImageIndex = safeIndex;
+
+  modalImg.style.opacity = 0;
+  setTimeout(() => {
+    modalImg.src = images[safeIndex] || "";
+    modalImg.alt = `${currentModalCake.nombre} - imagen ${safeIndex + 1}`;
+    modalImg.style.opacity = 1;
+  }, 120);
+
+  prevImgBtn.disabled = images.length <= 1;
+  nextImgBtn.disabled = images.length <= 1;
+
+  thumbs.querySelectorAll("img").forEach((thumb, index) => {
+    thumb.classList.toggle("active", index === currentImageIndex);
+  });
+}
+
+function renderThumbnails() {
+  thumbs.innerHTML = "";
+
+  (currentModalCake?.imagenes || []).forEach((img, index) => {
+    const thumb = document.createElement("img");
+    thumb.loading = "lazy";
+    thumb.src = img;
+    thumb.alt = `${currentModalCake.nombre} miniatura ${index + 1}`;
+    thumb.classList.toggle("active", index === currentImageIndex);
+    thumb.onclick = () => {
+      currentImageIndex = index;
+      renderModalImage();
+    };
+    thumbs.appendChild(thumb);
+  });
+}
+
+function changeModalImage(direction) {
+  if (!currentModalCake || (currentModalCake.imagenes || []).length <= 1) return;
+
+  const totalImages = currentModalCake.imagenes.length;
+  currentImageIndex = (currentImageIndex + direction + totalImages) % totalImages;
+  renderModalImage();
+}
+
+function closeModal() {
+  modal.classList.remove("active");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+  currentModalCake = null;
+}
+
+searchInput.addEventListener("input", (event) => {
+  searchTerm = normalizeText(event.target.value);
+  applyFilters();
 });
+
+clearFiltersBtn.addEventListener("click", clearAllFilters);
+scrollTopBtn.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
+prevImgBtn.addEventListener("click", () => changeModalImage(-1));
+nextImgBtn.addEventListener("click", () => changeModalImage(1));
 
-/* boton TODOS */
-
-const allBtn = document.createElement("button");
-allBtn.textContent="Todos";
-allBtn.className="filter-btn";
-
-allBtn.onclick=()=>{
-activeFilters.clear();
-updateFiltersUI();
-printCakes(cakesData);
-};
-
-filtersContainer.appendChild(allBtn);
-
-/* crear filtros */
-
-tags.forEach(tag=>{
-
-const btn=document.createElement("button");
-
-btn.textContent=tag;
-btn.className="filter-btn";
-
-btn.onclick=()=>toggleFilter(tag,btn);
-
-filtersContainer.appendChild(btn);
-
-});
-
-}
-
-function toggleFilter(tag,button){
-
-if(activeFilters.has(tag)){
-activeFilters.delete(tag);
-button.classList.remove("active");
-}else{
-activeFilters.add(tag);
-button.classList.add("active");
-}
-
-applyFilters();
-
-}
-
-function applyFilters(){
-
-if(activeFilters.size === 0){
-printCakes(cakesData);
-return;
-}
-
-const filtered = cakesData.filter(cake =>
-
-[...activeFilters].every(tag =>
-cake.etiquetas.includes(tag)
-)
-
-);
-
-printCakes(filtered);
-
-}
-
-function updateFiltersUI(){
-
-document.querySelectorAll(".filter-btn")
-.forEach(btn=>btn.classList.remove("active"));
-
-}
-
-/* ESC */
-
-document.addEventListener("keydown",(e)=>{
-if(e.key==="Escape") closeModal();
+/* ESC y navegación */
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeModal();
+  if (!modal.classList.contains("active")) return;
+  if (e.key === "ArrowLeft") changeModalImage(-1);
+  if (e.key === "ArrowRight") changeModalImage(1);
 });
 
 /* clic fuera */
-
-document.getElementById("modal").addEventListener("click",(e)=>{
-if(e.target.id==="modal") closeModal();
+modal.addEventListener("click", (e) => {
+  if (e.target.id === "modal") closeModal();
 });
